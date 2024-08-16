@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 import logging
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 import yaml
 
@@ -49,20 +49,20 @@ def param_load(file_path:str)-> float:
         raise e
 
 
-# Apply Bag of Words (CountVectorizer)
+# Apply Tfidf vectorizer
 def bagOfWords(X_train, X_test,max_features):
     try:
         
-        vectorizer = CountVectorizer(max_features=max_features)
+        vectorizer = TfidfVectorizer(max_features=max_features)
 
         # Fit the vectorizer on the training data and transform it
-        X_train_bow = vectorizer.fit_transform(X_train)
+        X_train_tfidf = vectorizer.fit_transform(X_train)
 
         # Transform the test data using the same vectorizer
-        X_test_bow = vectorizer.transform(X_test)
+        X_test_tfidf = vectorizer.transform(X_test)
 
-        logger.info("succesfully appled bagofwords on X_train and X_test data.")
-        return X_train_bow,X_test_bow
+        logger.info("succesfully appled tfidf on X_train and X_test data.")
+        return X_train_tfidf,X_test_tfidf
 
     except Exception as e:
         logger.error(f"error in apply bow on data {e}")
@@ -74,8 +74,8 @@ def save_data(train_df,test_df):
         data_path = os.path.join('data','features') 
         os.makedirs(data_path)
 
-        train_df.to_csv(os.path.join(data_path,"train_bow.csv"))
-        test_df.to_csv(os.path.join(data_path,'test_bow.csv'))
+        train_df.to_csv(os.path.join(data_path,"train_tfidf.csv"))
+        test_df.to_csv(os.path.join(data_path,'test_tfidf.csv'))
         logger.info('bow data save successfully')
     except Exception as e:
         logger.error(f"error in svaing feature engineering data {e}.")
@@ -89,10 +89,10 @@ def main():
     X_test = test_data['content'].values
     y_test = test_data['sentiment'].values
     max_features = param_load('params.yaml')
-    X_train_bow,X_test_bow = bagOfWords(X_train,X_test,max_features)
-    train_df = pd.DataFrame(X_train_bow.toarray())
+    X_train_tfidf,X_test_tfidf = bagOfWords(X_train,X_test,max_features)
+    train_df = pd.DataFrame(X_train_tfidf.toarray())
     train_df['label'] = y_train
-    test_df = pd.DataFrame(X_test_bow.toarray())
+    test_df = pd.DataFrame(X_test_tfidf.toarray())
     test_df['label'] = y_test
     save_data(train_df,test_df)
 

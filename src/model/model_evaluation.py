@@ -58,7 +58,7 @@ def evaluate_model(X_test,y_test):
         raise e
     
 def main():
-    X_test,y_test = load_test_data('./data/features/test_bow.csv')
+    X_test,y_test = load_test_data('./data/features/test_tfidf.csv')
     evaluate_model(X_test,y_test)
 
 if __name__=="__main__":

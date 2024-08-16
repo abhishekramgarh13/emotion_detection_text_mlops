@@ -52,7 +52,7 @@ def train_model(X_train,y_train):
         raise e
     
 def main():
-    X_train,y_train = load_features_data("./data/features/train_bow.csv")
+    X_train,y_train = load_features_data("./data/features/train_tfidf.csv")
     train_model(X_train,y_train)
 
 if __name__ == "__main__":
