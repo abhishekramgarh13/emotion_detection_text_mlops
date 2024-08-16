@@ -1,0 +1,4 @@
+[core]
+    remote = emotaion_re
+['remote "emotaion_re"']
+    url = ../UsersHPAppDataLocalTempdvc1
